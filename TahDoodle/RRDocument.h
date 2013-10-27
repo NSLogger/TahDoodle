@@ -9,5 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RRDocument : NSDocument
+{
+    NSMutableArray *todoItems;
+    IBOutlet NSTableView *itemTableView;
+    
+}
+
+-(IBAction)createNewItem:(id)sender;
 
 @end
