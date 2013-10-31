@@ -42,7 +42,7 @@
                         </connections>
                     </button>
                     <scrollView fixedFrame="YES" borderType="groove" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOZ-pF-mLc">
-                        <rect key="frame" x="20" y="92" width="457" height="289"/>
+                        <rect key="frame" x="20" y="90" width="457" height="289"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" ambiguous="YES" misplaced="YES" id="ESu-vS-tyu">
                             <rect key="frame" x="2" y="19" width="453" height="268"/>

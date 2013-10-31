@@ -10,6 +10,8 @@
 
 @implementation RRDocument
 
+# pragma NSDocument Overrides
+
 - (id)init
 {
     self = [super init];
@@ -26,6 +28,45 @@
     return @"RRDocument";
 }
 
+
+# pragma Actions
+
+- (IBAction)createNewItem:(id)sender
+{
+    if (!todoItems) {
+        todoItems = [NSMutableArray array];
+    }
+    
+    [todoItems addObject:@"New Item"];
+    
+    [itemTableView reloadData];
+    
+    [self updateChangeCount:NSChangeDone];
+}
+
+
+# pragma Data source methods
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tv
+{
+    return [todoItems count];
+}
+
+- (id)tableView:(NSTableView *)tableView
+        objectValueForTableColumn:(NSTableColumn *)tableColumn
+                    row:(NSInteger)row
+{
+    return [todoItems objectAtIndex:row];
+}
+
+- (void)tableView:(NSTableView *)tableView
+        setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    [todoItems replaceObjectAtIndex:row withObject:object];
+    
+    [self updateChangeCount:NSChangeDone];
+}
+
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController
 {
     [super windowControllerDidLoadNib:aController];
@@ -39,21 +80,22 @@
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
-    // Insert code here to write your document to data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning nil.
-    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-    NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
-    @throw exception;
-    return nil;
+    if (!todoItems) {
+        todoItems = [NSMutableArray array];
+    }
+    
+    NSData *data = [NSPropertyListSerialization
+                    dataWithPropertyList:todoItems format:NSPropertyListXMLFormat_v1_0 options:0 error:outError];
+    
+    return data;
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
-    // Insert code here to read your document from the given data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning NO.
-    // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead.
-    // If you override either of these, you should also override -isEntireFileLoaded to return NO if the contents are lazily loaded.
-    NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
-    @throw exception;
-    return YES;
+    todoItems = [NSPropertyListSerialization
+                 propertyListWithData:data options:NSPropertyListMutableContainers format:NULL error:outError];
+    
+    return (todoItems != nil);
 }
 
 @end
